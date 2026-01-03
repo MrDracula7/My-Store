@@ -16,3 +16,12 @@ module.exports = async (email, otp) => {
     text: `Your OTP is ${otp}. It expires in 5 minutes.`
   });
 };
+
+await transporter.sendMail({
+  from: process.env.EMAIL_USER,
+  to: email,
+  subject: "Your OTP Code",
+  text: `Your OTP is ${otp}`
+});
+
+console.log("OTP email sent to:", email);
