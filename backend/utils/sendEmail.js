@@ -1,3 +1,33 @@
+// const nodemailer = require("nodemailer");
+
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS
+//   }
+// });
+
+// module.exports = async (email, otp) => {
+//   await transporter.sendMail({
+//     from: "MyStore <no-reply@mystore.com>",
+//     to: email,
+//     subject: "Your OTP Verification Code",
+//     text: `Your OTP is ${otp}. It expires in 5 minutes.`
+//   });
+// };
+
+// await transporter.sendMail({
+//   from: process.env.EMAIL_USER,
+//   to: email,
+//   subject: "Your OTP Code",
+//   text: `Your OTP is ${otp}`
+// });
+
+// console.log("OTP email sent to:", email);
+
+
+
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -8,20 +38,16 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-module.exports = async (email, otp) => {
+// ✅ EXPORT AN ASYNC FUNCTION
+const sendEmail = async (email, otp) => {
   await transporter.sendMail({
-    from: "MyStore <no-reply@mystore.com>",
+    from: `"MyStore" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Your OTP Verification Code",
     text: `Your OTP is ${otp}. It expires in 5 minutes.`
   });
+
+  console.log("OTP email sent to:", email);
 };
 
-await transporter.sendMail({
-  from: process.env.EMAIL_USER,
-  to: email,
-  subject: "Your OTP Code",
-  text: `Your OTP is ${otp}`
-});
-
-console.log("OTP email sent to:", email);
+module.exports = sendEmail;
