@@ -10,14 +10,57 @@
 <div class="auth-box">
   <h2>Create Account</h2>
 
-  <input type="text" placeholder="Name" />
+  <!-- <input type="text" placeholder="Name" />
   <input type="email" placeholder="Email" />
   <input type="password" placeholder="Password" />
 
-  <button>Sign Up</button>
+  <button>Sign Up</button> -->
+  <input type="email" placeholder="Email" id="email" />
+<button onclick="sendOtp()">Send OTP</button>
+
+<input type="text" placeholder="Enter OTP" id="otp" disabled />
+<button onclick="verifyOtp()">Verify OTP</button>
+
+<input type="password" placeholder="Password" id="password" disabled />
+<button onclick="signup()">Create Account</button>
 
   <p>Already have an account? <a href="login.html">Login</a></p>
 </div>
 
+
+<script>
+const API = "https://my-store-w94t.onrender.com";
+
+async function sendOtp() {
+  const email = email.value;
+  const res = await fetch(`${API}/api/otp/send`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+  alert("OTP sent");
+}
+
+async function verifyOtp() {
+  const email = document.getElementById("email").value;
+  const otp = document.getElementById("otp").value;
+
+  const res = await fetch(`${API}/api/otp/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp })
+  });
+
+  if (res.ok) {
+    document.getElementById("password").disabled = false;
+    alert("Email verified");
+  } else {
+    alert("Wrong OTP");
+  }
+}
+</script>
+
+  
 </body>
 </html>
+
