@@ -1,53 +1,16 @@
-// const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.EMAIL_USER,
-//     pass: process.env.EMAIL_PASS
-//   }
-// });
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-// module.exports = async (email, otp) => {
-//   await transporter.sendMail({
-//     from: "MyStore <no-reply@mystore.com>",
-//     to: email,
-//     subject: "Your OTP Verification Code",
-//     text: `Your OTP is ${otp}. It expires in 5 minutes.`
-//   });
-// };
-
-// await transporter.sendMail({
-//   from: process.env.EMAIL_USER,
-//   to: email,
-//   subject: "Your OTP Code",
-//   text: `Your OTP is ${otp}`
-// });
-
-// console.log("OTP email sent to:", email);
-
-
-
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
-
-// ✅ EXPORT AN ASYNC FUNCTION
 const sendEmail = async (email, otp) => {
-  await transporter.sendMail({
-    from: `"MyStore" <${process.env.EMAIL_USER}>`,
+  await resend.emails.send({
+    from: "MyStore <onboarding@resend.dev>",
     to: email,
     subject: "Your OTP Verification Code",
-    text: `Your OTP is ${otp}. It expires in 5 minutes.`
+    html: `<h2>Your OTP: ${otp}</h2><p>Valid for 5 minutes</p>`
   });
 
-  console.log("OTP email sent to:", email);
+  console.log("OTP email sent via Resend to:", email);
 };
 
 module.exports = sendEmail;
