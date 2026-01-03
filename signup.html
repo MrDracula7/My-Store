@@ -28,7 +28,7 @@
 </div>
 
 
-<script>
+<!-- <script>
 const API = "https://my-store-w94t.onrender.com";
 
 async function sendOtp() {
@@ -58,9 +58,78 @@ async function verifyOtp() {
     alert("Wrong OTP");
   }
 }
+</script> -->
+
+  <script>
+const API = "https://my-store-w94t.onrender.com";
+
+async function sendOtp() {
+  const emailInput = document.getElementById("email");
+  const email = emailInput.value;
+
+  if (!email) {
+    alert("Please enter email first");
+    return;
+  }
+
+  const res = await fetch(`${API}/api/otp/send`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  });
+
+  const data = await res.json();
+  alert(data.message);
+
+  // enable OTP input
+  document.getElementById("otp").disabled = false;
+}
+
+async function verifyOtp() {
+  const email = document.getElementById("email").value;
+  const otp = document.getElementById("otp").value;
+
+  if (!otp) {
+    alert("Enter OTP");
+    return;
+  }
+
+  const res = await fetch(`${API}/api/otp/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, otp })
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    alert("Email verified");
+    document.getElementById("password").disabled = false;
+  } else {
+    alert(data.message);
+  }
+}
+
+async function signup() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch(`${API}/api/auth/signup`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password })
+  });
+
+  const data = await res.json();
+  alert(data.message);
+
+  if (res.ok) window.location.href = "login.html";
+}
 </script>
 
   
 </body>
 </html>
+
 
