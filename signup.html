@@ -73,6 +73,19 @@ async function verifyOtp() {
 </script> -->
 
   <script>
+    function createAccount() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const otp = document.getElementById("otp").value.trim();
+
+  if (!email || !password || !otp) {
+    alert("All fields are required ❌");
+    return;
+  }
+
+  // call backend only if valid
+}
+
 const API = "https://my-store-w94t.onrender.com";
 
 async function sendOtp() {
@@ -143,6 +156,7 @@ async function signup() {
   
 </body>
 </html>
+
 
 
 
