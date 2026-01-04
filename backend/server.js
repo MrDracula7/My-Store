@@ -6,7 +6,11 @@ require("dotenv").config();
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://mrdracula7.github.io",
+  methods: ["GET", "POST"],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -20,4 +24,5 @@ app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 
 const otpRoutes = require("./routes/otpRoutes");
 app.use("/api/otp", otpRoutes);
+
 
