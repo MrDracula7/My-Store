@@ -104,7 +104,7 @@
 
 
 
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Otp = require("../models/otp");
 
@@ -158,4 +158,5 @@ const login = async (req, res) => {
 };
 
 module.exports = { signup, login };
+
 
