@@ -42,11 +42,11 @@
 
 // import bcrypt from "bcrypt";
 // import User from "../models/User.js";
-import Otp from "../models/otp.js";
+const Otp = require("../models/otp");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 
-export const signup = async (req, res) => {
+export.signup = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -80,7 +80,7 @@ export const signup = async (req, res) => {
 };
 
 
-export const login = async (req, res) => {
+export.login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -99,6 +99,7 @@ export const login = async (req, res) => {
 
   res.json({ message: "Login successful" });
 };
+
 
 
 
