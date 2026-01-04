@@ -73,18 +73,6 @@ async function verifyOtp() {
 </script> -->
 
   <script>
-    function createAccount() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const otp = document.getElementById("otp").value.trim();
-
-  if (!email || !password || !otp) {
-    alert("All fields are required ❌");
-    return;
-  }
-
-  // call backend only if valid
-}
 
 const API = "https://my-store-w94t.onrender.com";
 
@@ -135,15 +123,41 @@ async function verifyOtp() {
   }
 }
 
-async function signup() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+// async function signup() {
+//   const name = document.getElementById("name").value;
+//   const email = document.getElementById("email").value;
+//   const password = document.getElementById("password").value;
 
-  const res = await fetch(`${API}/api/auth/signup`, {
+//   const res = await fetch(`${API}/api/auth/signup`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ name, email, password })
+//   });
+
+//   const data = await res.json();
+//   alert(data.message);
+
+//   if (res.ok) window.location.href = "login.html";
+// }
+
+    async function signup() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    alert("All fields are required");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
+
+  const res = await fetch("/api/auth/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password })
+    body: JSON.stringify({ email, password })
   });
 
   const data = await res.json();
@@ -156,6 +170,7 @@ async function signup() {
   
 </body>
 </html>
+
 
 
 
