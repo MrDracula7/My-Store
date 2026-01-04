@@ -18,5 +18,46 @@
   <p>Don’t have an account? <a href="signup.html">Sign up</a></p>
 </div>
 
+
+<script>
+
+<input id="email" type="email" placeholder="Email" />
+<input id="password" type="password" placeholder="Password" />
+<button onclick="login()">Login</button>
+
+<script>
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    alert("All fields required");
+    return;
+  }
+
+  const res = await fetch("https://my-store-w94t.onrender.com/api/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert(data.message);
+    return;
+  }
+
+  // 🔐 STORE TOKEN
+  localStorage.setItem("token", data.token);
+
+  alert("Login successful");
+  window.location.href = "index.html";
+}
+</script>
+
+
+  </script>
 </body>
 </html>
+
