@@ -9,7 +9,8 @@
 // module.exports = mongoose.model("Otp", otpSchema);
 
 
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const otpSchema = new mongoose.Schema({
   email: String,
@@ -18,4 +19,4 @@ const otpSchema = new mongoose.Schema({
   expiresAt: Date
 });
 
-export default mongoose.model("Otp", otpSchema);
+module.exports = mongoose.model("Otp", otpSchema);
