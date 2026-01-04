@@ -40,9 +40,11 @@
 
 
 
-import bcrypt from "bcrypt";
-import User from "../models/User.js";
-import Otp from "../models/otp.js";
+// import bcrypt from "bcrypt";
+// import User from "../models/User.js";
+const Otp = require("../models/otp.js";)
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 export const signup = async (req, res) => {
   const { email, password } = req.body;
@@ -97,4 +99,5 @@ export const login = async (req, res) => {
 
   res.json({ message: "Login successful" });
 };
+
 
