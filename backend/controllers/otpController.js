@@ -35,7 +35,7 @@
 
 
 
-const Otp = require("../models/Otp");
+const Otp = require("../models/otp");
 const sendEmail = require("../utils/sendEmail");
 
 // SEND OTP
