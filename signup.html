@@ -159,7 +159,7 @@ async function verifyOtp() {
   //   headers: { "Content-Type": "application/json" },
   //   body: JSON.stringify({ email, password })
   // });
-  fetch("https://my-store-w94t.onrender.com/api/auth/signup", {
+  const res = await fetch("https://my-store-w94t.onrender.com/api/auth/signup", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ email, password })
@@ -176,6 +176,7 @@ async function verifyOtp() {
   
 </body>
 </html>
+
 
 
 
