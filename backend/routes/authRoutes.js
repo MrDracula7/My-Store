@@ -8,7 +8,6 @@ router.post("/login", login);
 module.exports = router;
 
 //dashboard route
-const express = require("express");
 const auth = require("../middleware/authMiddleware");
 const User = require("../models/User");
 
@@ -20,3 +19,4 @@ router.get("/dashboard", auth, async (req, res) => {
 });
 
 module.exports = router;
+
