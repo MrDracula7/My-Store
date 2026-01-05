@@ -1,13 +1,30 @@
-<h2>User Dashboard</h2>
-<p id="email"></p>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
 
-<button id="logoutBtn">Logout</button>
+<div class="dashboard">
+  <img id="profilePhoto" class="avatar" />
+  <h2 id="name"></h2>
+  <p id="email"></p>
+
+  <form id="profileForm">
+    <input type="text" id="newName" placeholder="Update name" />
+    <input type="file" id="photo" />
+    <button type="submit">Update Profile</button>
+  </form>
+
+  <button id="logoutBtn" class="logout">Logout</button>
+</div>
 
 <script>
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
 if (!token) {
-  window.location.href = "/login.html";
+  window.location.href = "login.html";
 }
 
 fetch("https://my-store-w94t.onrender.com/api/dashboard", {
@@ -25,5 +42,6 @@ fetch("https://my-store-w94t.onrender.com/api/dashboard", {
   window.location.href = "login.html";
 });
 
-
 </script>
+</body>
+</html>
