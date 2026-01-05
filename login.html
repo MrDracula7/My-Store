@@ -10,20 +10,14 @@
 <div class="auth-box">
   <h2>Login</h2>
 
-  <input type="email" placeholder="Email" />
-  <input type="password" placeholder="Password" />
-
-  <button type="submit" onclick="login()">Login</button>
-
+  <!-- <input type="email" placeholder="Email" />
+  <input type="password" placeholder="Password" /> -->
+  <!-- <button type="submit" onclick="login()">Login</button> -->
+  <input id="email" type="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password" />
+  <button onclick="login()">Login</button>
   <p>Don’t have an account? <a href="signup.html">Sign up</a></p>
 </div>
-
-
-<script>
-
-<input id="email" type="email" placeholder="Email" />
-<input id="password" type="password" placeholder="Password" />
-<button onclick="login()">Login</button>
 
 <script>
 async function login() {
@@ -56,9 +50,8 @@ async function login() {
 }
 </script>
 
-
-  </script>
 </body>
 </html>
+
 
 
