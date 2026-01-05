@@ -25,4 +25,6 @@ app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 const otpRoutes = require("./routes/otpRoutes");
 app.use("/api/otp", otpRoutes);
 
+app.use("/uploads", express.static("uploads"));
+
 
