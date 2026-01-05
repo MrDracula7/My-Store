@@ -18,27 +18,28 @@ router.get("/dashboard", auth, async (req, res) => {
 
 module.exports = router;
 
-//profile route
-const upload = require("../middleware/upload");
+// //profile route
+// const upload = require("../middleware/upload");
 
-router.put("/profile", auth, upload.single("photo"), async (req, res) => {
-  const { name } = req.body;
+// router.put("/profile", auth, upload.single("photo"), async (req, res) => {
+//   const { name } = req.body;
 
-  const updateData = { name };
+//   const updateData = { name };
 
-  if (req.file) {
-    updateData.photo = `/uploads/${req.file.filename}`;
-  }
+//   if (req.file) {
+//     updateData.photo = `/uploads/${req.file.filename}`;
+//   }
 
-  const user = await User.findByIdAndUpdate(
-    req.user.id,
-    updateData,
-    { new: true }
-  ).select("-password");
+//   const user = await User.findByIdAndUpdate(
+//     req.user.id,
+//     updateData,
+//     { new: true }
+//   ).select("-password");
 
-  res.json(user);
-});
+//   res.json(user);
+// });
 
-module.exports = router;
+// module.exports = router;
+
 
 
