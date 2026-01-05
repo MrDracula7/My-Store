@@ -8,7 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 app.use(cors({
   origin: "https://mrdracula7.github.io",
-  methods: ["GET", "POST"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
 app.use(express.json());
@@ -26,5 +26,6 @@ const otpRoutes = require("./routes/otpRoutes");
 app.use("/api/otp", otpRoutes);
 
 app.use("/uploads", express.static("uploads"));
+
 
 
