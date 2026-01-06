@@ -35,6 +35,22 @@ const User = require("../models/User");
 const auth = require("../middleware/authMiddleware");
 const upload = require("../middleware/upload");
 
+router.get("/", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to load profile" });
+  }
+});
+
+
 router.put("/", auth, upload.single("photo"), async (req, res) => {
   try {
     const updateData = {};
@@ -48,16 +64,16 @@ router.put("/", auth, upload.single("photo"), async (req, res) => {
       { new: true }
     ).select("-password");
 
-    router.get("/", auth, async (req, res) => {
-  const user = await User.findById(req.user.id).select("-password");
-  res.json(user);
-});
+//     router.get("/", auth, async (req, res) => {
+//   const user = await User.findById(req.user.id).select("-password");
+//   res.json(user);
+// });
 
-    res.json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Profile update failed" });
-  }
-});
+//     res.json(user);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Profile update failed" });
+//   }
+// });
 
 module.exports = router;   // 🔴 THIS MUST EXIST
