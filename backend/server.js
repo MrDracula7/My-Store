@@ -22,6 +22,7 @@ mongoose.connect(process.env.MONGO_URI)
 const profileRoutes = require("./routes/profileRoutes");
 app.use("/api/profile", profileRoutes);
 
+app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
@@ -29,7 +30,8 @@ app.listen(PORT, () => console.log(`Server running on ${PORT}`));
 const otpRoutes = require("./routes/otpRoutes");
 app.use("/api/otp", otpRoutes);
 
-app.use("/uploads", express.static("uploads"));
+
+
 
 
 
