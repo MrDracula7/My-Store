@@ -7,7 +7,7 @@
 <body>
 
 <div class="dashboard">
-  <img id="profilePhoto" class="avatar" />
+  <img id="profileImg" class="avatar" />
   <h2 id="name"></h2>
   <p id="email"></p>
 
@@ -24,8 +24,11 @@
 const token = localStorage.getItem("token");
 
 if (!token) {
-  window.location.href = "/login.html";
+  window.location.href = "login.html";
 }
+  
+  profileImg.src = user.photo || "default-avatar.png";
+
 
 fetch("https://my-store-w94t.onrender.com/api/dashboard", {
   headers: {
