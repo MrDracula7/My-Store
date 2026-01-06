@@ -48,6 +48,11 @@ router.put("/", auth, upload.single("photo"), async (req, res) => {
       { new: true }
     ).select("-password");
 
+    router.get("/", auth, async (req, res) => {
+  const user = await User.findById(req.user.id).select("-password");
+  res.json(user);
+});
+
     res.json(user);
   } catch (err) {
     console.error(err);
