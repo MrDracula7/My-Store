@@ -8,6 +8,7 @@
 
 <div class="dashboard">
   <img id="profileImg" class="avatar" />
+  <span id="profileName"></span>
   <h2 id="name"></h2>
   <p id="email"></p>
 
@@ -26,9 +27,28 @@ const token = localStorage.getItem("token");
 if (!token) {
   window.location.href = "login.html";
 }
-  
-  profileImg.src = user.photo || "default-avatar.png";
 
+const token = localStorage.getItem("token");
+
+async function loadProfile() {
+  const res = await fetch("https://my-store-w94t.onrender.com/api/profile", {
+    headers: {
+      Authorization: "Bearer " + token
+    }
+  });
+
+  const user = await res.json(); // 🔴 user is defined HERE
+
+  document.getElementById("profileImg").src =
+    user.photo || "default-avatar.png";
+
+  document.getElementById("profileName").innerText =
+    user.name || "User";
+}
+
+loadProfile();
+
+// profileImg.src = user.photo || "default-avatar.png";
 
 fetch("https://my-store-w94t.onrender.com/api/dashboard", {
   headers: {
