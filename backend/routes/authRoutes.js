@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 
-module.exports = router;
+// module.exports = router;
 
 //dashboard route
 const auth = require("../middleware/authMiddleware");
@@ -40,6 +40,7 @@ module.exports = router;
 // });
 
 // module.exports = router;
+
 
 
 
