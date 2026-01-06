@@ -28,8 +28,6 @@ if (!token) {
   window.location.href = "login.html";
 }
 
-const token = localStorage.getItem("token");
-
 async function loadProfile() {
   const res = await fetch("https://my-store-w94t.onrender.com/api/profile", {
     headers: {
