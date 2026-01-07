@@ -20,6 +20,14 @@
 </div>
 
 <script>
+  
+ document.addEventListener("keydown", e => {
+  if (e.ctrlKey && e.shiftKey && e.key === "A") {
+    window.location.href = "/admin-login.html";
+  }
+});
+
+  
 async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
@@ -49,16 +57,13 @@ async function login() {
   window.location.href = "index.html";
 }
 
-  document.addEventListener("keydown", e => {
-  if (e.ctrlKey && e.shiftKey && e.key === "/") {
-    window.location.href = "admin-login.html";
-  }
-});
+
 
 </script>
 
 </body>
 </html>
+
 
 
 
