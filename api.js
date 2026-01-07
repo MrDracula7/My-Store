@@ -1,4 +1,4 @@
-async function apiFetch(url, options = {}) {
+async function Fetch(url, options = {}) {
   const token = localStorage.getItem("token");
 
   const res = await fetch(url, {
