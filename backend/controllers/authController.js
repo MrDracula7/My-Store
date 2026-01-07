@@ -46,6 +46,10 @@ const login = async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
+  if (user.isBlocked) {
+  return res.status(403).json({ message: "Account blocked by admin" });
+  }
+
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     return res.status(401).json({ message: "Invalid credentials" });
@@ -65,6 +69,7 @@ const login = async (req, res) => {
 };
 
 module.exports = { signup, login };
+
 
 
 
