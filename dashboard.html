@@ -1,39 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-<h2>User Dashboard</h2>
-<p id="email"></p>
-<button id="logoutBtn">Logout</button>
+<!-- Sidebar -->
+<aside class="sidebar">
+  <h2>ADMIN</h2>
+  <nav>
+    <button onclick="openPage('overview')">Overview</button>
+    <button onclick="openPage('users')">Users</button>
+    <button onclick="openPage('products')">Products</button>
+    <button onclick="openPage('orders')">Orders</button>
+    <button onclick="openPage('categories')">Categories</button>
+    <button onclick="openPage('analytics')">Analytics</button>
+    <button onclick="openPage('settings')">Settings</button>
+    <button class="logout" onclick="logout()">Logout</button>
+  </nav>
+</aside>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- OVERVIEW -->
+  <section id="overview" class="page active">
+    <h1>Dashboard</h1>
+    <div class="cards">
+      <div class="card">Users<br><strong>0</strong></div>
+      <div class="card">Products<br><strong>0</strong></div>
+      <div class="card">Orders<br><strong>0</strong></div>
+      <div class="card">Revenue<br><strong>₹0</strong></div>
+    </div>
+  </section>
+
+  <!-- USERS -->
+  <section id="users" class="page">
+    <h1>Users</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>user@email.com</td>
+          <td>Active</td>
+          <td>
+            <button>Block</button>
+            <button>Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products" class="page">
+    <h1>Products</h1>
+    <button>Add Product</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ORDERS -->
+  <section id="orders" class="page">
+    <h1>Orders</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>User</th>
+          <th>Status</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section id="categories" class="page">
+    <h1>Categories</h1>
+    <input placeholder="New category">
+    <button>Add</button>
+    <ul class="list"></ul>
+  </section>
+
+  <!-- ANALYTICS -->
+  <section id="analytics" class="page">
+    <h1>Analytics</h1>
+    <p>Graphs & charts will be added later</p>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="settings" class="page">
+    <h1>Settings</h1>
+    <button>Maintenance Mode</button>
+    <button>Manage Admins</button>
+  </section>
+
+</main>
 
 <script>
- const token = localStorage.getItem("token");
-
-if (!token) {
-  window.location.href = "login.html";
+  function openPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => {
+    p.classList.remove("active");
+  });
+  document.getElementById(pageId).classList.add("active");
 }
 
-fetch("https://my-store-w94t.onrender.com/api/dashboard", {
-  headers: {
-    Authorization: "Bearer " + token
-  }
-})
-.then(res => res.json())
-.then(data => {
-  document.getElementById("email").innerText = "Email: " + data.email;
-});
+function logout() {
+  localStorage.removeItem("adminToken");
+  window.location.href = "admin-login.html";
+}
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("token");
-  window.location.href = "login.html";
-});
+/* Protect dashboard */
+if (!localStorage.getItem("adminToken")) {
+  window.location.href = "admin-login.html";
+}
 
 </script>
-
 </body>
 </html>
-
