@@ -37,5 +37,5 @@ setInterval(async () => {
     localStorage.removeItem("token");
     window.location.href = "login.html";
   }
-}, 60000);
+}, 10000);
 
