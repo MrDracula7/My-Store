@@ -36,6 +36,26 @@
     </div>
   </div>
 
-  <script></script>
+  <script>
+    function showSection(id) {
+  document.querySelectorAll(".section").forEach(sec => {
+    sec.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+}
+
+function logout() {
+  localStorage.removeItem("adminToken");
+  window.location.href = "admin-login.html";
+}
+
+/* Protect dashboard */
+const token = localStorage.getItem("adminToken");
+if (!token) {
+  window.location.href = "admin-login.html";
+}
+
+  </script>
 </body>
 </html>
