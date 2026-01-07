@@ -117,22 +117,86 @@
 </main>
 
 <script>
-  function openPage(pageId) {
+//   function openPage(pageId) {
+//   document.querySelectorAll(".page").forEach(p => {
+//     p.classList.remove("active");
+//   });
+//   document.getElementById(pageId).classList.add("active");
+// }
+
+// function logout() {
+//   localStorage.removeItem("adminToken");
+//   window.location.href = "admin-login.html";
+// }
+
+// /* Protect dashboard */
+// if (!localStorage.getItem("adminToken")) {
+//   window.location.href = "admin-login.html";
+// }
+
+const API = "https://my-store-w94t.onrender.com/api/admin";
+const token = localStorage.getItem("adminToken");
+
+if (!token) {
+  window.location.href = "admin-login.html";
+}
+
+/* Navigation */
+function openPage(pageId) {
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
   });
   document.getElementById(pageId).classList.add("active");
+
+  if (pageId === "users") loadUsers();
 }
 
+/* Logout */
 function logout() {
   localStorage.removeItem("adminToken");
   window.location.href = "admin-login.html";
 }
 
-/* Protect dashboard */
-if (!localStorage.getItem("adminToken")) {
-  window.location.href = "admin-login.html";
+/* Load user count */
+async function loadUserCount() {
+  const res = await fetch(`${API}/users/count`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const data = await res.json();
+  document.querySelector(".card strong").innerText = data.count;
 }
+
+/* Load users table */
+async function loadUsers() {
+  const res = await fetch(`${API}/users`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const users = await res.json();
+  const tbody = document.querySelector("#users tbody");
+  tbody.innerHTML = "";
+
+  users.forEach(user => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${user.email}</td>
+      <td>${user.isBlocked ? "Blocked" : "Active"}</td>
+      <td>
+        <button>Block</button>
+        <button>Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* Initial load */
+loadUserCount();
 
 </script>
 </body>
