@@ -8,14 +8,15 @@
   <h2>User Dashboard</h2>
 <p id="email"></p>
 <button id="logoutBtn">Logout</button>
-
+  
+<script src="api.js"></script>
 <script>
    const token = localStorage.getItem("token");
 
 if (!token) {
   window.location.href = "login.html";
 }
-  fetch("https://my-store-w94t.onrender.com/api/dashboard", {
+  apifetch("https://my-store-w94t.onrender.com/api/dashboard", {
   headers: {
     Authorization: "Bearer " + token
   }
