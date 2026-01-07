@@ -16,7 +16,7 @@
 if (!token) {
   window.location.href = "login.html";
 }
-  apifetch("https://my-store-w94t.onrender.com/api/dashboard", {
+  fetch("https://my-store-w94t.onrender.com/api/dashboard", {
   headers: {
     Authorization: "Bearer " + token
   }
