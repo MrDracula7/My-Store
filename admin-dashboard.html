@@ -117,67 +117,108 @@
 </main>
 
 <script>
-//   function openPage(pageId) {
+
+
+// const API = "https://my-store-w94t.onrender.com/api/admin";
+// const token = localStorage.getItem("adminToken");
+
+// if (!token) {
+//   window.location.href = "admin-login.html";
+// }
+
+// /* Navigation */
+// function openPage(pageId) {
 //   document.querySelectorAll(".page").forEach(p => {
 //     p.classList.remove("active");
 //   });
 //   document.getElementById(pageId).classList.add("active");
+
+//   if (pageId === "users") loadUsers();
 // }
 
+// /* Logout */
 // function logout() {
 //   localStorage.removeItem("adminToken");
 //   window.location.href = "admin-login.html";
 // }
 
-// /* Protect dashboard */
-// if (!localStorage.getItem("adminToken")) {
-//   window.location.href = "admin-login.html";
+// /* Load user count */
+// async function loadUserCount() {
+//   const res = await fetch(`${API}/users/count`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   });
+
+//   const data = await res.json();
+//   document.querySelector(".card strong").innerText = data.count;
 // }
 
-const API = "https://my-store-w94t.onrender.com/api/admin";
+// /* Load users table */
+// async function loadUsers() {
+//   const res = await fetch(`${API}/users`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   });
+
+//   const users = await res.json();
+//   const tbody = document.querySelector("#users tbody");
+//   tbody.innerHTML = "";
+
+//   users.forEach(user => {
+//     const tr = document.createElement("tr");
+//     tr.innerHTML = `
+//       <td>${user.email}</td>
+//       <td>${user.isBlocked ? "Blocked" : "Active"}</td>
+//       <td>
+//         <button>Block</button>
+//         <button>Delete</button>
+//       </td>
+//     `;
+//     tbody.appendChild(tr);
+//   });
+// }
+
+// /* Initial load */
+// loadUserCount();
+
+
+  const API = "https://my-store-w94t.onrender.com/api/admin";
 const token = localStorage.getItem("adminToken");
 
 if (!token) {
   window.location.href = "admin-login.html";
 }
 
-/* Navigation */
 function openPage(pageId) {
-  document.querySelectorAll(".page").forEach(p => {
-    p.classList.remove("active");
-  });
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(pageId).classList.add("active");
 
   if (pageId === "users") loadUsers();
 }
 
-/* Logout */
 function logout() {
   localStorage.removeItem("adminToken");
   window.location.href = "admin-login.html";
 }
 
-/* Load user count */
+/* Load users count */
 async function loadUserCount() {
   const res = await fetch(`${API}/users/count`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+    headers: { Authorization: `Bearer ${token}` }
   });
-
   const data = await res.json();
   document.querySelector(".card strong").innerText = data.count;
 }
 
-/* Load users table */
+/* Load users */
 async function loadUsers() {
   const res = await fetch(`${API}/users`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+    headers: { Authorization: `Bearer ${token}` }
   });
-
   const users = await res.json();
+
   const tbody = document.querySelector("#users tbody");
   tbody.innerHTML = "";
 
@@ -187,16 +228,47 @@ async function loadUsers() {
       <td>${user.email}</td>
       <td>${user.isBlocked ? "Blocked" : "Active"}</td>
       <td>
-        <button>Block</button>
-        <button>Delete</button>
+        <button onclick="toggleBlock('${user._id}')">
+          ${user.isBlocked ? "Unblock" : "Block"}
+        </button>
+        <button onclick="deleteUser('${user._id}')">Delete</button>
       </td>
     `;
     tbody.appendChild(tr);
   });
 }
 
+/* Block / Unblock */
+async function toggleBlock(userId) {
+  await fetch(`${API}/users/${userId}/block`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  loadUsers();
+  loadUserCount();
+}
+
+/* Delete user */
+async function deleteUser(userId) {
+  if (!confirm("Are you sure?")) return;
+
+  await fetch(`${API}/users/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  loadUsers();
+  loadUserCount();
+}
+
 /* Initial load */
 loadUserCount();
+
 
 </script>
 </body>
