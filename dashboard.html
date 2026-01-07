@@ -1,103 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
-</head>
-<body>
-
-<div class="dashboard">
-  <img id="profileImg" class="avatar" />
-  <span id="profileName"></span>
-  <h2 id="name"></h2>
-  <p id="email"></p>
-
-  <form id="profileForm">
-    <input type="text" id="newName" placeholder="Update name" />
-    <input type="file" id="photo" />
-    <button type="submit">Update Profile</button>
-  </form>
-
-  <button id="logoutBtn" class="logout">Logout</button>
-</div>
-
-<script>
-const token = localStorage.getItem("token");
-
-if (!token) {
-  window.location.href = "login.html";
-}
-
-async function loadProfile() {
-  const res = await fetch("https://my-store-w94t.onrender.com/api/profile", {
-    headers: {
-      Authorization: "Bearer " + token
-    }
-  });
-
-  const user = await res.json(); // 🔴 user is defined HERE
-
-  document.getElementById("profileImg").src =
-    user.photo || "default-avatar.png";
-
-  document.getElementById("profileName").innerText =
-    user.name || "User";
-}
-
-loadProfile();
-
-// profileImg.src = user.photo || "default-avatar.png";
-
-fetch("https://my-store-w94t.onrender.com/api/dashboard", {
-  headers: {
-    Authorization: "Bearer " + token
-  }
-})
-.then(res => res.json())
-.then(user => {
-  document.getElementById("name").innerText = user.name || "No Name";
-  document.getElementById("email").innerText = user.email;
-  document.getElementById("profilePhoto").src =
-    user.photo || "https://via.placeholder.com/90";
-});
-
-// Update profile
-document.getElementById("profileForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const formData = new FormData();
-  formData.append("name", document.getElementById("newName").value);
-  formData.append("photo", document.getElementById("photo").files[0]);
-
-  const res = await fetch("https://my-store-w94t.onrender.com/api/profile", {
-    method: "PUT",
-    headers: {
-      Authorization: "Bearer " + token
-    },
-    body: formData
-  });
-
-  const updatedUser = await res.json();
-  location.reload();
-});
-
-// Logout
-document.getElementById("logoutBtn").onclick = () => {
-  localStorage.removeItem("token");
-  window.location.href = "login.html";
-};
-
-
-</script>
-</body>
-</html> -->
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,107 +6,32 @@ document.getElementById("logoutBtn").onclick = () => {
 </head>
 <body>
 
-<div class="dashboard">
-  <img id="profileImg" class="avatar" />
-  <span id="profileName"></span>
-
-  <h2 id="name"></h2>
-  <p id="email"></p>
-
-  <form id="profileForm">
-    <input type="text" id="newName" placeholder="Update name" />
-    <input type="file" id="photo" />
-    <button type="submit">Update Profile</button>
-  </form>
-
-  <button id="logoutBtn" class="logout">Logout</button>
-</div>
+<h2>User Dashboard</h2>
+<p id="email"></p>
+<button id="logoutBtn">Logout</button>
 
 <script>
-  const token = localStorage.getItem("token");
+ const token = localStorage.getItem("token");
 
-  if (!token) {
-    window.location.href = "login.html";
+if (!token) {
+  window.location.href = "login.html";
+}
+
+fetch("https://my-store-w94t.onrender.com/api/dashboard", {
+  headers: {
+    Authorization: "Bearer " + token
   }
+})
+.then(res => res.json())
+.then(data => {
+  document.getElementById("email").innerText = "Email: " + data.email;
+});
 
-  // 🔹 Load user profile
-  async function loadProfile() {
-    try {
-      const res = await fetch("https://my-store-w94t.onrender.com/api/profile", {
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      });
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+});
 
-      if (!res.ok) {
-        throw new Error("Failed to load profile");
-      }
-
-      const user = await res.json();
-
-      document.getElementById("profileImg").src =
-        user.photo || "https://via.placeholder.com/90";
-
-      document.getElementById("profileName").innerText =
-        user.name || "User";
-
-      document.getElementById("name").innerText =
-        user.name || "No Name";
-
-      document.getElementById("email").innerText =
-        user.email || "";
-
-      // Prefill input
-      document.getElementById("newName").value = user.name || "";
-
-    } catch (err) {
-      console.error(err);
-      alert("Error loading profile");
-    }
-  }
-
-  loadProfile();
-
-  // 🔹 Update profile
-  document.getElementById("profileForm").addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("name", document.getElementById("newName").value);
-
-    const fileInput = document.getElementById("photo");
-    if (fileInput.files.length > 0) {
-      formData.append("photo", fileInput.files[0]);
-    }
-
-    try {
-      const res = await fetch("https://my-store-w94t.onrender.com/api/profile", {
-        method: "PUT",
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formData
-      });
-
-      if (!res.ok) {
-        throw new Error("Profile update failed");
-      }
-
-      await res.json();
-      await loadProfile(); // refresh data without reload
-      alert("Profile updated successfully ✅");
-
-    } catch (err) {
-      console.error(err);
-      alert("Error updating profile");
-    }
-  });
-
-  // 🔹 Logout
-  document.getElementById("logoutBtn").onclick = () => {
-    localStorage.removeItem("token");
-    window.location.href = "login.html";
-  };
 </script>
 
 </body>
