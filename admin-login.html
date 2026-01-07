@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin</title>
+</head>
+<body>
+  <h2>Admin Login</h2>
+
+<input type="email" id="email" placeholder="Email" />
+<input type="password" id="password" placeholder="Password" />
+<button onclick="login()">Login</button>
+
+<script>
+function login() {
+  fetch("https://my-store-w94t.onrender.com/api/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.token) {
+      localStorage.setItem("adminToken", data.token);
+      window.location.href = "/admin-dashboard.html";
+    } else {
+      alert(data.message);
+    }
+  });
+}
+</script>
+
+</body>
+</html>
