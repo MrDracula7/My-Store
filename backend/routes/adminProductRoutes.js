@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
 const adminAuth = require("../middleware/adminAuth");
+const upload = require("../middleware/upload");
+const { addProduct } = require("../controllers/adminProductController");
 
 // Get all products
 router.get("/", adminAuth, async (req, res) => {
@@ -38,5 +40,15 @@ router.patch("/:id/status", adminAuth, async (req, res) => {
   await product.save();
   res.json(product);
 });
+
+//images
+router.post(
+  "/products",
+  adminAuth,
+  upload.single("image"),
+  addProduct
+);
+
+module.exports = router;
 
 module.exports = router;
