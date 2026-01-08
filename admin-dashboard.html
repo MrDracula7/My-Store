@@ -264,13 +264,13 @@ function logout() {
 }
 
   /* Load users count */
-async function loadUserCount() {
-  const res = await fetch(`${API}/users/count`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const data = await res.json();
-  document.querySelector(".card strong").innerText = data.count;
-}
+// async function loadUserCount() {
+//   const res = await fetch(`${API}/users/count`, {
+//     headers: { Authorization: `Bearer ${token}` }
+//   });
+//   const data = await res.json();
+//   document.querySelector(".card strong").innerText = data.count;
+// }
 
 /* LOAD USERS */
 async function loadUsers(page = 1) {
@@ -349,7 +349,7 @@ async function deleteUser(id) {
 }
 
 /* Initial load */
-loadUserCount();
+// loadUserCount();
 
 
 </script>
