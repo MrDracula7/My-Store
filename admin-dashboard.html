@@ -290,16 +290,54 @@ async function deleteUser(id) {
   loadUsers(currentPage);
 }
 
-function loadProducts() {
+// function loadProducts() {
+//   fetch("https://my-store-w94t.onrender.com/api/admin/products", {
+//     headers: {
+//       Authorization: "Bearer " + localStorage.getItem("adminToken")
+//     }
+//   })
+//   .then(res => res.json())
+//   .then(products => {
+//     const table = document.getElementById("productsTable");
+//     table.innerHTML = "";
+
+//     products.forEach(p => {
+//       table.innerHTML += `
+//         <tr>
+//           <td>${p.name}</td>
+//           <td>₹${p.price}</td>
+//           <td>${p.stock}</td>
+//           <td>${p.isActive ? "Active" : "Inactive"}</td>
+//           <td>
+//             <button onclick="toggleProduct('${p._id}')">Toggle</button>
+//             <button onclick="deleteProduct('${p._id}')">Delete</button>
+//           </td>
+//         </tr>
+//       `;
+//     });
+//   });
+// }
+
+
+
+  function loadProducts() {
   fetch("https://my-store-w94t.onrender.com/api/admin/products", {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("adminToken")
     }
   })
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("Unauthorized");
+    return res.json();
+  })
   .then(products => {
     const table = document.getElementById("productsTable");
     table.innerHTML = "";
+
+    if (!products.length) {
+      table.innerHTML = `<tr><td colspan="5">No products</td></tr>`;
+      return;
+    }
 
     products.forEach(p => {
       table.innerHTML += `
@@ -315,8 +353,14 @@ function loadProducts() {
         </tr>
       `;
     });
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Admin session expired. Login again.");
+    window.location.href = "admin-login.html";
   });
 }
+
 
   function toggleProduct(id) {
   fetch(`https://my-store-w94t.onrender.com/api/admin/products/${id}/status`, {
@@ -424,6 +468,7 @@ document.getElementById("productForm").addEventListener("submit", async e => {
   
 /* Initial load */
 loadUserCount();
+document.addEventListener("DOMContentLoaded", loadProducts);
 
 
 </script>
