@@ -162,43 +162,34 @@
 //   window.location.href = "admin-login.html";
 // }
 
-// /* Navigation */
 // function openPage(pageId) {
-//   document.querySelectorAll(".page").forEach(p => {
-//     p.classList.remove("active");
-//   });
+//   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
 //   document.getElementById(pageId).classList.add("active");
 
 //   if (pageId === "users") loadUsers();
 // }
 
-// /* Logout */
 // function logout() {
 //   localStorage.removeItem("adminToken");
 //   window.location.href = "admin-login.html";
 // }
 
-// /* Load user count */
+// /* Load users count */
 // async function loadUserCount() {
 //   const res = await fetch(`${API}/users/count`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     }
+//     headers: { Authorization: `Bearer ${token}` }
 //   });
-
 //   const data = await res.json();
 //   document.querySelector(".card strong").innerText = data.count;
 // }
 
-// /* Load users table */
+// /* Load users */
 // async function loadUsers() {
 //   const res = await fetch(`${API}/users`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     }
+//     headers: { Authorization: `Bearer ${token}` }
 //   });
-
 //   const users = await res.json();
+
 //   const tbody = document.querySelector("#users tbody");
 //   tbody.innerHTML = "";
 
@@ -208,20 +199,53 @@
 //       <td>${user.email}</td>
 //       <td>${user.isBlocked ? "Blocked" : "Active"}</td>
 //       <td>
-//         <button>Block</button>
-//         <button>Delete</button>
+//         <button onclick="toggleBlock('${user._id}')">
+//           ${user.isBlocked ? "Unblock" : "Block"}
+//         </button>
+//         <button onclick="deleteUser('${user._id}')">Delete</button>
 //       </td>
 //     `;
 //     tbody.appendChild(tr);
 //   });
 // }
 
+// /* Block / Unblock */
+// async function toggleBlock(userId) {
+//   await fetch(`${API}/users/${userId}/block`, {
+//     method: "PATCH",
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   });
+
+//   loadUsers();
+//   loadUserCount();
+// }
+
+// /* Delete user */
+// async function deleteUser(userId) {
+//   if (!confirm("Are you sure?")) return;
+
+//   await fetch(`${API}/users/${userId}`, {
+//     method: "DELETE",
+//     headers: {
+//       Authorization: `Bearer ${token}`
+//     }
+//   });
+
+//   loadUsers();
+//   loadUserCount();
+// }
+
 // /* Initial load */
 // loadUserCount();
 
 
-  const API = "https://my-store-w94t.onrender.com/api/admin";
+const API = "https://YOUR_BACKEND_URL/api/admin";
 const token = localStorage.getItem("adminToken");
+
+let currentPage = 1;
+let totalPages = 1;
 
 if (!token) {
   window.location.href = "admin-login.html";
@@ -231,7 +255,7 @@ function openPage(pageId) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.getElementById(pageId).classList.add("active");
 
-  if (pageId === "users") loadUsers();
+  if (pageId === "users") loadUsers(1);
 }
 
 function logout() {
@@ -239,7 +263,7 @@ function logout() {
   window.location.href = "admin-login.html";
 }
 
-/* Load users count */
+  /* Load users count */
 async function loadUserCount() {
   const res = await fetch(`${API}/users/count`, {
     headers: { Authorization: `Bearer ${token}` }
@@ -248,17 +272,29 @@ async function loadUserCount() {
   document.querySelector(".card strong").innerText = data.count;
 }
 
-/* Load users */
-async function loadUsers() {
-  const res = await fetch(`${API}/users`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const users = await res.json();
+/* LOAD USERS */
+async function loadUsers(page = 1) {
+  currentPage = page;
+
+  const search = document.getElementById("searchInput").value;
+  const status = document.getElementById("statusFilter").value;
+
+  const res = await fetch(
+    `${API}/users?page=${page}&limit=5&search=${search}&status=${status}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  const data = await res.json();
+  totalPages = data.pages;
 
   const tbody = document.querySelector("#users tbody");
   tbody.innerHTML = "";
 
-  users.forEach(user => {
+  data.users.forEach(user => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${user.email}</td>
@@ -272,34 +308,44 @@ async function loadUsers() {
     `;
     tbody.appendChild(tr);
   });
+
+  document.getElementById("pageInfo").innerText =
+    `Page ${currentPage} of ${totalPages}`;
 }
 
-/* Block / Unblock */
-async function toggleBlock(userId) {
-  await fetch(`${API}/users/${userId}/block`, {
+/* PAGINATION */
+function nextPage() {
+  if (currentPage < totalPages) loadUsers(currentPage + 1);
+}
+
+function prevPage() {
+  if (currentPage > 1) loadUsers(currentPage - 1);
+}
+
+/* BLOCK / UNBLOCK */
+async function toggleBlock(id) {
+  await fetch(`${API}/users/${id}/block`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
 
-  loadUsers();
-  loadUserCount();
+  loadUsers(currentPage);
 }
 
-/* Delete user */
-async function deleteUser(userId) {
-  if (!confirm("Are you sure?")) return;
+/* DELETE USER */
+async function deleteUser(id) {
+  if (!confirm("Delete this user?")) return;
 
-  await fetch(`${API}/users/${userId}`, {
+  await fetch(`${API}/users/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${token}`
     }
   });
 
-  loadUsers();
-  loadUserCount();
+  loadUsers(currentPage);
 }
 
 /* Initial load */
