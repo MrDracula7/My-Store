@@ -185,6 +185,8 @@
   
 const API = "https://my-store-w94t.onrender.com/api/admin";
 const token = localStorage.getItem("adminToken");
+let editingProductId = null;
+
 
 let currentPage = 1;
 let totalPages = 1;
@@ -347,6 +349,9 @@ async function deleteUser(id) {
           <td>${p.stock}</td>
           <td>${p.isActive ? "Active" : "Inactive"}</td>
           <td>
+            <button onclick="openEditProduct('${encodeURIComponent(JSON.stringify(p))}')">
+              Edit
+            </button>
             <button onclick="toggleProduct('${p._id}')">Toggle</button>
             <button onclick="deleteProduct('${p._id}')">Delete</button>
           </td>
@@ -463,9 +468,70 @@ document.getElementById("productForm").addEventListener("submit", async e => {
   }
 });
 
+  function openEditProduct(productStr) {
+  const product = JSON.parse(decodeURIComponent(productStr));
+  editingProductId = product._id;
+
+  document.getElementById("name").value = product.name;
+  document.getElementById("description").value = product.description;
+  document.getElementById("category").value = product.category;
+  document.getElementById("price").value = product.price;
+  document.getElementById("discount").value = product.discount || 0;
+  document.getElementById("stock").value = product.stock;
+  document.getElementById("status").value = product.isActive;
+
+  if (product.image) {
+    const preview = document.getElementById("preview");
+    preview.src = product.image;
+    preview.classList.remove("hidden");
+  }
+
+  document.querySelector(".submit-btn").innerText = "Update Product";
+  openAddProduct();
+}
 
 
-  
+  document.getElementById("productForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("name", document.getElementById("name").value);
+  formData.append("description", document.getElementById("description").value);
+  formData.append("category", document.getElementById("category").value);
+  formData.append("price", document.getElementById("price").value);
+  formData.append("discount", document.getElementById("discount").value);
+  formData.append("stock", document.getElementById("stock").value);
+  formData.append("isActive", document.getElementById("status").value);
+
+  const imageInput = document.getElementById("image");
+  if (imageInput.files[0]) {
+    formData.append("image", imageInput.files[0]);
+  }
+
+  const url = editingProductId
+    ? `https://my-store-w94t.onrender.com/api/admin/products/${editingProductId}`
+    : `https://my-store-w94t.onrender.com/api/admin/products`;
+
+  const method = editingProductId ? "PUT" : "POST";
+
+  const res = await fetch(url, {
+    method,
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("adminToken")
+    },
+    body: formData
+  });
+
+  if (res.ok) {
+    editingProductId = null;
+    document.querySelector(".submit-btn").innerText = "Add Product";
+    closeProductModal();
+    loadProducts();
+    e.target.reset();
+  }
+});
+
+
 /* Initial load */
 loadUserCount();
 document.addEventListener("DOMContentLoaded", loadProducts);
