@@ -12,10 +12,10 @@ router.get("/", adminAuth, async (req, res) => {
 });
 
 // Add product
-router.post("/", adminAuth, async (req, res) => {
-  const product = await Product.create(req.body);
-  res.json(product);
-});
+// router.post("/", adminAuth, async (req, res) => {
+//   const product = await Product.create(req.body);
+//   res.json(product);
+// });
 
 // Update product
 router.put("/:id", adminAuth, async (req, res) => {
