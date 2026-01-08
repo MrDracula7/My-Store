@@ -25,6 +25,7 @@ app.post("/api/admin/login", require("./controllers/adminAuth").adminLogin);
 const adminRoutes = require("./routes/adminRoutes");
 app.use("/api/admin", adminRoutes);
 
+app.use("/api/admin/products", adminProductRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
@@ -32,6 +33,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
 
 
 
