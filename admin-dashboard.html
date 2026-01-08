@@ -37,7 +37,7 @@
   </section>
 
   <!-- USERS -->
-  <section id="users" class="page">
+  <!-- <section id="users" class="page">
     <h1>Users</h1>
     <table>
       <thead>
@@ -58,7 +58,43 @@
         </tr>
       </tbody>
     </table>
-  </section>
+  </section> -->
+  <section id="users" class="page">
+  <h1>Users</h1>
+
+  <div class="controls">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search by email"
+      oninput="loadUsers(1)"
+    />
+
+    <select id="statusFilter" onchange="loadUsers(1)">
+      <option value="all">All</option>
+      <option value="active">Active</option>
+      <option value="blocked">Blocked</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="pagination">
+    <button onclick="prevPage()">Prev</button>
+    <span id="pageInfo"></span>
+    <button onclick="nextPage()">Next</button>
+  </div>
+</section>
+
 
   <!-- PRODUCTS -->
   <section id="products" class="page">
