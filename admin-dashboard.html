@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin Panel</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -132,6 +133,53 @@
   </section>
 
 </main>
+
+
+  <!-- Add Product Modal -->
+<div id="productModal" class="modal hidden">
+  <div class="modal-content">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <h3>Add Product</h3>
+      <span class="material-icons close-btn" onclick="closeProductModal()">close</span>
+    </div>
+
+    <!-- Form -->
+    <form id="productForm">
+
+      <input type="text" id="name" placeholder="Product Name" required>
+
+      <textarea id="description" placeholder="Product Description" required></textarea>
+
+      <input type="text" id="category" placeholder="Category (eg: Electronics, Fashion)" required>
+
+      <div class="row">
+        <input type="number" id="price" placeholder="Price ₹" required>
+        <input type="number" id="discount" placeholder="Discount %" value="0">
+      </div>
+
+      <input type="number" id="stock" placeholder="Stock Quantity" required>
+
+      <select id="status">
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+
+      <!-- Image -->
+      <label class="image-upload">
+        <span class="material-icons">upload</span>
+        Upload Image
+        <input type="file" id="image" accept="image/*" hidden>
+      </label>
+
+      <img id="preview" class="preview hidden">
+
+      <button type="submit" class="submit-btn">Add Product</button>
+    </form>
+  </div>
+</div>
+
 
 <script>
   
