@@ -86,14 +86,35 @@ router.post(
 );
 
 // UPDATE product
-router.put("/:id", adminAuth, async (req, res) => {
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  );
-  res.json(product);
-});
+// router.put("/:id", adminAuth, async (req, res) => {
+//   const product = await Product.findByIdAndUpdate(
+//     req.params.id,
+//     req.body,
+//     { new: true }
+//   );
+//   res.json(product);
+// });
+router.put(
+  "/:id",
+  adminAuth,
+  upload.single("image"),
+  async (req, res) => {
+    const updateData = { ...req.body };
+
+    if (req.file) {
+      updateData.image = req.file.path;
+    }
+
+    const product = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    res.json(product);
+  }
+);
+
 
 // DELETE product
 router.delete("/:id", adminAuth, async (req, res) => {
