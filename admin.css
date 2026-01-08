@@ -101,3 +101,23 @@ button:hover {
   color: black;
   border: 1px solid black;
 }
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.controls input,
+.controls select {
+  padding: 6px;
+  border: 1px solid black;
+}
+
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
