@@ -36,29 +36,7 @@
     </div>
   </section>
 
-  <!-- USERS -->
-  <!-- <section id="users" class="page">
-    <h1>Users</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>user@email.com</td>
-          <td>Active</td>
-          <td>
-            <button>Block</button>
-            <button>Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section> -->
+
   <section id="users" class="page">
   <h1>Users</h1>
 
@@ -97,21 +75,24 @@
 
 
   <!-- PRODUCTS -->
-  <section id="products" class="page">
-    <h1>Products</h1>
-    <button>Add Product</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Stock</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
+<section id="productsTab" class="tab hidden">
+  <h2>Products</h2>
+
+  <button onclick="openAddProduct()">+ Add Product</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="productsTable"></tbody>
+  </table>
+</section>
 
   <!-- ORDERS -->
   <section id="orders" class="page">
@@ -153,94 +134,7 @@
 </main>
 
 <script>
-
-
-// const API = "https://my-store-w94t.onrender.com/api/admin";
-// const token = localStorage.getItem("adminToken");
-
-// if (!token) {
-//   window.location.href = "admin-login.html";
-// }
-
-// function openPage(pageId) {
-//   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-//   document.getElementById(pageId).classList.add("active");
-
-//   if (pageId === "users") loadUsers();
-// }
-
-// function logout() {
-//   localStorage.removeItem("adminToken");
-//   window.location.href = "admin-login.html";
-// }
-
-// /* Load users count */
-// async function loadUserCount() {
-//   const res = await fetch(`${API}/users/count`, {
-//     headers: { Authorization: `Bearer ${token}` }
-//   });
-//   const data = await res.json();
-//   document.querySelector(".card strong").innerText = data.count;
-// }
-
-// /* Load users */
-// async function loadUsers() {
-//   const res = await fetch(`${API}/users`, {
-//     headers: { Authorization: `Bearer ${token}` }
-//   });
-//   const users = await res.json();
-
-//   const tbody = document.querySelector("#users tbody");
-//   tbody.innerHTML = "";
-
-//   users.forEach(user => {
-//     const tr = document.createElement("tr");
-//     tr.innerHTML = `
-//       <td>${user.email}</td>
-//       <td>${user.isBlocked ? "Blocked" : "Active"}</td>
-//       <td>
-//         <button onclick="toggleBlock('${user._id}')">
-//           ${user.isBlocked ? "Unblock" : "Block"}
-//         </button>
-//         <button onclick="deleteUser('${user._id}')">Delete</button>
-//       </td>
-//     `;
-//     tbody.appendChild(tr);
-//   });
-// }
-
-// /* Block / Unblock */
-// async function toggleBlock(userId) {
-//   await fetch(`${API}/users/${userId}/block`, {
-//     method: "PATCH",
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     }
-//   });
-
-//   loadUsers();
-//   loadUserCount();
-// }
-
-// /* Delete user */
-// async function deleteUser(userId) {
-//   if (!confirm("Are you sure?")) return;
-
-//   await fetch(`${API}/users/${userId}`, {
-//     method: "DELETE",
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     }
-//   });
-
-//   loadUsers();
-//   loadUserCount();
-// }
-
-// /* Initial load */
-// loadUserCount();
-
-
+  
 const API = "https://my-store-w94t.onrender.com/api/admin";
 const token = localStorage.getItem("adminToken");
 
@@ -348,6 +242,55 @@ async function deleteUser(id) {
   loadUsers(currentPage);
 }
 
+function loadProducts() {
+  fetch("https://my-store-w94t.onrender.com/api/admin/products", {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("adminToken")
+    }
+  })
+  .then(res => res.json())
+  .then(products => {
+    const table = document.getElementById("productsTable");
+    table.innerHTML = "";
+
+    products.forEach(p => {
+      table.innerHTML += `
+        <tr>
+          <td>${p.name}</td>
+          <td>₹${p.price}</td>
+          <td>${p.stock}</td>
+          <td>${p.isActive ? "Active" : "Inactive"}</td>
+          <td>
+            <button onclick="toggleProduct('${p._id}')">Toggle</button>
+            <button onclick="deleteProduct('${p._id}')">Delete</button>
+          </td>
+        </tr>
+      `;
+    });
+  });
+}
+
+  function toggleProduct(id) {
+  fetch(`https://my-store-w94t.onrender.com/api/admin/products/${id}/status`, {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("adminToken")
+    }
+  }).then(loadProducts);
+}
+
+function deleteProduct(id) {
+  if (!confirm("Delete this product?")) return;
+
+  fetch(`https://my-store-w94t.onrender.com/api/admin/products/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("adminToken")
+    }
+  }).then(loadProducts);
+}
+
+  
 /* Initial load */
 loadUserCount();
 
