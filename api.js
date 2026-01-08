@@ -13,7 +13,7 @@ async function apiFetch(url, options = {}) {
     // 🔥 User was blocked
     localStorage.removeItem("token");
     alert("Your account has been blocked by admin");
-    window.location.href = "login.html";
+    window.location.href = "account-blocked.html";
     return;
   }
 
