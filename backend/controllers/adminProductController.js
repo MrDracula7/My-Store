@@ -1,4 +1,4 @@
-const Product = require("../models/Product");
+// const Product = require("../models/Product");
 
 // exports.addProduct = async (req, res) => {
 //   try {
@@ -19,6 +19,7 @@ const Product = require("../models/Product");
 //   }
 // };
 
+const Product = require("../models/Product");
 
 exports.addProduct = async (req, res) => {
   console.log("BODY:", req.body);
