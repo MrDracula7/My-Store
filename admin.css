@@ -249,7 +249,7 @@ textarea {
   display: none;
 }
 
-/* .modal-content.wide {
+.modal-content.wide {
   width: 420px;
   transition: width 0.4s ease;
 }
@@ -276,34 +276,6 @@ textarea {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-} */
-
-.modal-content {
-  display: flex;
-  transition: width 0.4s ease;
-  width: 480px;
 }
 
-.modal-content.expand {
-  width: 900px;
-}
-
-.modal-right {
-  width: 50%;
-  padding-left: 20px;
-  border-left: 1px solid #ddd;
-}
-
-.loader {
-  width: 24px;
-  height: 24px;
-  border: 3px solid #000;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
 
