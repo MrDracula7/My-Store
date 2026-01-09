@@ -246,12 +246,7 @@
 
     <!-- Form -->
     <form id="productForm" enctype="multipart/form-data">
-
-    
-         <!-- LEFT (Base Product) -->
-      <div class="modal-left">
-        <!-- existing fields here -->
-    
+      
       <!-- Basic Fields -->
       <input type="text" id="name" placeholder="Product Name" required>
       <textarea id="description" placeholder="Product Description" required></textarea>
@@ -263,12 +258,6 @@
         <option value="fashion">Fashion</option>
       </select>
 
-        <select id="variantToggle">
-          <option value="no">Has Variants? No</option>
-          <option value="yes">Has Variants? Yes</option>
-        </select>
-
-      
       <!-- Loader -->
       <div id="categoryLoader" class="loader hidden"></div>
 
@@ -296,19 +285,6 @@
       </label>
 
       <img id="preview" class="preview hidden">
-    </div>
-    
-
-            <!-- RIGHT (Variants) -->
-        <div class="modal-right hidden" id="variantPanel">
-          <div class="loader hidden" id="variantLoader"></div>
-      
-          <div id="variantFields"></div>
-      
-          <button type="button" onclick="addVariant()">
-            <span class="material-icons">add</span> Add Variant
-          </button>
-        </div>
   
       <button type="submit" class="submit-btn">Add Product</button>
     </form>
@@ -391,74 +367,6 @@ categorySelect.addEventListener("change", () => {
     }
   }, 1200);
 });
-
-    const variantTemplates = {
-  fashion: ["Color", "Size"],
-  electronics: ["RAM", "Storage"]
-};
-  
-document.getElementById("variantToggle").addEventListener("change", e => {
-  const panel = document.getElementById("variantPanel");
-  const modal = document.querySelector(".modal-content");
-  const loader = document.getElementById("variantLoader");
-  const fields = document.getElementById("variantFields");
-
-  if (e.target.value === "yes") {
-    panel.classList.remove("hidden");
-    modal.classList.add("expand");
-    loader.classList.remove("hidden");
-    fields.innerHTML = "";
-
-    setTimeout(() => {
-      loader.classList.add("hidden");
-      renderVariantFields();
-    }, 1200);
-  } else {
-    modal.classList.remove("expand");
-    panel.classList.add("hidden");
-  }
-});
-
-  function renderVariantFields() {
-  const category = document.getElementById("category").value;
-  const container = document.getElementById("variantFields");
-  container.innerHTML = "";
-
-  (variantTemplates[category] || []).forEach(attr => {
-    container.innerHTML += `
-      <input placeholder="${attr}" data-variant />
-    `;
-  });
-}
-
-  function addVariant() {
-  const container = document.getElementById("variantFields");
-
-  container.innerHTML += `
-    <div class="variant-row">
-      <input placeholder="Value" />
-      <input type="number" placeholder="Price" />
-      <input type="number" placeholder="Stock" />
-    </div>
-  `;
-}
-
-  if (document.getElementById("variantToggle").value === "yes") {
-  formData.append("hasVariants", true);
-
-  const variants = [];
-  document.querySelectorAll(".variant-row").forEach(row => {
-    const inputs = row.querySelectorAll("input");
-    variants.push({
-      attributes: { value: inputs[0].value },
-      price: inputs[1].value,
-      stock: inputs[2].value
-    });
-  });
-
-  formData.append("variants", JSON.stringify(variants));
-}
-
   
 
   /* Load users count */
