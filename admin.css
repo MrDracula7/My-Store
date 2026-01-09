@@ -199,10 +199,6 @@ textarea {
   margin-top: 10px;
 }
 
-.icon.btn{
-  color: black;
-}
-
 .product-toolbar {
   display: flex;
   justify-content: space-between;
@@ -213,6 +209,11 @@ textarea {
   background: none;
   border: none;
   cursor: pointer;
+  font-size: 24px;
+}
+
+.product-toolbar .material-icons {
+  color: #333;
   font-size: 24px;
 }
 
