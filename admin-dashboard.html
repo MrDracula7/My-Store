@@ -200,6 +200,7 @@ function openPage(pageId) {
   document.getElementById(pageId).classList.add("active");
 
   if (pageId === "users") loadUsers(1);
+  if (pageId === "products") loadProducts();
 }
 
 function logout() {
@@ -389,6 +390,10 @@ function deleteProduct(id) {
 
 
 function openAddProduct() {
+  editingProductId = null;
+  document.getElementById("productForm").reset();
+  document.querySelector(".submit-btn").innerText = "Add Product";
+  document.getElementById("preview").classList.add("hidden");
   document.getElementById("productModal").classList.remove("hidden");
 }
 
@@ -404,28 +409,30 @@ function closeProductModal() {
   preview.classList.remove("hidden");
 });
 
-
-
 // document.getElementById("productForm").addEventListener("submit", async e => {
 //   e.preventDefault();
 
 //   const formData = new FormData();
-//   formData.append("name", name.value);
-//   formData.append("description", description.value);
-//   formData.append("category", category.value);
-//   formData.append("price", price.value);
-//   formData.append("discount", discount.value);
-//   formData.append("stock", stock.value);
-//   formData.append("isActive", status.value);
-//   formData.append("image", image.files[0]);
 
-//   const res = await fetch("https://my-store-w94t.onrender.com/api/admin/products", {
-//     method: "POST",
-//     headers: {
-//       Authorization: "Bearer " + localStorage.getItem("adminToken")
-//     },
-//     body: formData
-//   });
+//   formData.append("name", document.getElementById("name").value);
+//   formData.append("description", document.getElementById("description").value);
+//   formData.append("category", document.getElementById("category").value);
+//   formData.append("price", document.getElementById("price").value);
+//   formData.append("discount", document.getElementById("discount").value);
+//   formData.append("stock", document.getElementById("stock").value);
+//   formData.append("isActive", document.getElementById("status").value);
+//   formData.append("image", document.getElementById("image").files[0]);
+
+//   const res = await fetch(
+//     "https://my-store-w94t.onrender.com/api/admin/products",
+//     {
+//       method: "POST",
+//       headers: {
+//         Authorization: "Bearer " + localStorage.getItem("adminToken")
+//       },
+//       body: formData
+//     }
+//   );
 
 //   if (res.ok) {
 //     closeProductModal();
@@ -433,40 +440,6 @@ function closeProductModal() {
 //     e.target.reset();
 //   }
 // });
-
-
-
-document.getElementById("productForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const formData = new FormData();
-
-  formData.append("name", document.getElementById("name").value);
-  formData.append("description", document.getElementById("description").value);
-  formData.append("category", document.getElementById("category").value);
-  formData.append("price", document.getElementById("price").value);
-  formData.append("discount", document.getElementById("discount").value);
-  formData.append("stock", document.getElementById("stock").value);
-  formData.append("isActive", document.getElementById("status").value);
-  formData.append("image", document.getElementById("image").files[0]);
-
-  const res = await fetch(
-    "https://my-store-w94t.onrender.com/api/admin/products",
-    {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("adminToken")
-      },
-      body: formData
-    }
-  );
-
-  if (res.ok) {
-    closeProductModal();
-    loadProducts();
-    e.target.reset();
-  }
-});
 
   function openEditProduct(productStr) {
   const product = JSON.parse(decodeURIComponent(productStr));
@@ -480,11 +453,11 @@ document.getElementById("productForm").addEventListener("submit", async e => {
   document.getElementById("stock").value = product.stock;
   document.getElementById("status").value = product.isActive;
 
-  if (product.image) {
-    const preview = document.getElementById("preview");
-    preview.src = product.image;
-    preview.classList.remove("hidden");
-  }
+if (product.image?.url) {
+  const preview = document.getElementById("preview");
+  preview.src = product.image.url;
+  preview.classList.remove("hidden");
+}
 
   document.querySelector(".submit-btn").innerText = "Update Product";
   openAddProduct();
@@ -534,7 +507,8 @@ document.getElementById("productForm").addEventListener("submit", async e => {
 
 /* Initial load */
 loadUserCount();
-document.addEventListener("DOMContentLoaded", loadProducts);
+loadProducts();
+
 
 
 </script>
