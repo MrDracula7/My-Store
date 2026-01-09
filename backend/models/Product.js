@@ -35,6 +35,18 @@ const productSchema = new mongoose.Schema({
     of: String
   },
 
+  variants: [
+  {
+    attributes: {
+      type: Map,
+      of: String
+    },
+    price: Number,
+    stock: Number
+    }
+  ],
+  hasVariants: { type: Boolean, default: false },
+  
   image: {
     url: String,
     public_id: String
