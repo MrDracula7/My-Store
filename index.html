@@ -4,56 +4,126 @@
   <meta charset="UTF-8">
   <title>MyStore</title>
 
-  <!-- Google Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-  <!-- Font -->
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div class="logo">MyStore</div>
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">MyStore</div>
 
-    <div class="search">
-      <input type="text" placeholder="Search for products, brands and more">
-      <span class="material-icons">search</span>
+  <div class="search-bar">
+    <input type="text" placeholder="Search for products, brands and more">
+    <span class="material-icons">search</span>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-btn">
+      <span class="material-icons">person</span>
+    </button>
+    <button class="icon-btn">
+      <span class="material-icons">shopping_cart</span>
+    </button>
+  </div>
+</header>
+
+<!-- CATEGORY STRIP -->
+<nav class="categories">
+
+  <div class="category-item">
+    <span>Electronics</span>
+    <div class="dropdown">
+      <div class="column">
+        <h4>Mobiles</h4>
+        <a>Mi</a>
+        <a>Samsung</a>
+        <a>iPhone</a>
+        <a>Realme</a>
+      </div>
+      <div class="column">
+        <h4>Laptops</h4>
+        <a>Dell</a>
+        <a>HP</a>
+        <a>Asus</a>
+        <a>MacBook</a>
+      </div>
     </div>
+  </div>
 
-    <div class="actions">
-      <button>Login</button>
-      <button>
-        <span class="material-icons">shopping_cart</span>
-      </button>
+  <div class="category-item">
+    <span>Fashion</span>
+    <div class="dropdown">
+      <div class="column">
+        <h4>Men</h4>
+        <a>T-Shirts</a>
+        <a>Shirts</a>
+        <a>Jeans</a>
+      </div>
+      <div class="column">
+        <h4>Women</h4>
+        <a>Dresses</a>
+        <a>Tops</a>
+        <a>Sarees</a>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <!-- CATEGORY BAR -->
-  <nav class="categories">
-    <div class="category">Mobiles</div>
-    <div class="category">Fashion</div>
-    <div class="category">Electronics</div>
-    <div class="category">Home</div>
-    <div class="category">Sports</div>
-  </nav>
+  <div class="category-item">
+    <span>Home</span>
+  </div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h2>Big Deals, Better Prices</h2>
-    <p>Discover trending products today</p>
-  </section>
+  <div class="category-item">
+    <span>Sports</span>
+  </div>
 
-  <!-- PRODUCTS -->
-  <section class="products-section">
-    <h3>Deals of the Day</h3>
+</nav>
 
-    <div class="products-grid" id="productsGrid">
-      <!-- product cards will go here -->
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Big Savings. Better Shopping.</h1>
+  <p>Explore trending products at best prices</p>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products">
+  <div class="section-header">
+    <h2>Deals of the Day</h2>
+    <button class="view-all">View All</button>
+  </div>
+
+  <div class="products-grid">
+    <!-- Product Card -->
+    <div class="product-card">
+      <img src="https://via.placeholder.com/300" alt="">
+      <h3>Cool T-Shirt</h3>
+
+      <div class="price">
+        <span class="new">₹299</span>
+        <span class="old">₹499</span>
+        <span class="off">40% OFF</span>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
+  <script src="api.js"></script>
+  <script>
+    
+const token = localStorage.getItem("token");
+
+if (token) {
+  document.getElementById("profileBtn").style.display = "block";
+}
+
+document.getElementById("profileBtn").addEventListener("click", () => {
+  window.location.href = "dashboard.html";
+});
 </body>
 </html>
