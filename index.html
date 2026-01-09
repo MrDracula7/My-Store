@@ -1,73 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>MyStore</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="logo">MyStore</div>
-  <input type="text" placeholder="Search products..." class="search" />
-  <div class="nav-links">
-    <a href="login.html">Login</a>
-    <a href="">Cart 🛒</a>
-    <button id="profileBtn" style="display:none;">Profile</button>
-  </div>
-</nav>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="logo">MyStore</div>
 
-<!-- HERO -->
-<section class="hero">
-  <h1>Everything you need, in one place</h1>
-  <p>Shop smart. Shop simple.</p>
-</section>
+    <div class="search">
+      <input type="text" placeholder="Search for products, brands and more">
+      <span class="material-icons">search</span>
+    </div>
 
-<!-- PRODUCTS -->
-<section class="products">
-  <div class="product-card">
-    <img src="https://via.placeholder.com/200" />
-    <h3>Sample Product</h3>
-    <p>₹999</p>
-    <button>Add to Cart</button>
-  </div>
+    <div class="actions">
+      <button>Login</button>
+      <button>
+        <span class="material-icons">shopping_cart</span>
+      </button>
+    </div>
+  </header>
 
-  <div class="product-card">
-    <img src="https://via.placeholder.com/200" />
-    <h3>Sample Product</h3>
-    <p>₹1299</p>
-    <button>Add to Cart</button>
-  </div>
-</section>
+  <!-- CATEGORY BAR -->
+  <nav class="categories">
+    <div class="category">Mobiles</div>
+    <div class="category">Fashion</div>
+    <div class="category">Electronics</div>
+    <div class="category">Home</div>
+    <div class="category">Sports</div>
+  </nav>
 
-<!-- FOOTER -->
-<footer>
-  <p>© 2026 MyStore. All rights reserved.</p>
-</footer>
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Big Deals, Better Prices</h2>
+    <p>Discover trending products today</p>
+  </section>
 
-<script src="api.js"></script>
-  <script>
-    
-const token = localStorage.getItem("token");
+  <!-- PRODUCTS -->
+  <section class="products-section">
+    <h3>Deals of the Day</h3>
 
-if (token) {
-  document.getElementById("profileBtn").style.display = "block";
-}
+    <div class="products-grid" id="productsGrid">
+      <!-- product cards will go here -->
+    </div>
+  </section>
 
-document.getElementById("profileBtn").addEventListener("click", () => {
-  window.location.href = "dashboard.html";
-});
-
-
-    
-  </script>
 </body>
 </html>
-
-
-
-
-
-
-
