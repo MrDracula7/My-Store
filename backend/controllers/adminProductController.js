@@ -33,7 +33,10 @@ exports.addProduct = async (req, res) => {
       price: req.body.price,
       discount: req.body.discount,
       stock: req.body.stock,
-      image: req.file?.path
+      image: {
+      url: String,
+      public_id: String
+      }
     });
 
     res.json(product);
