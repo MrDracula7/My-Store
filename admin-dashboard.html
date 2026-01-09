@@ -192,9 +192,53 @@
 
 
   <!-- Add Product Modal -->
-<div id="productModal" class="modal hidden">
-  <div class="modal-content">
+<!-- <div id="productModal" class="modal hidden">
+  <div class="modal-content"> -->
     
+    <!-- Header -->
+    <!-- <div class="modal-header">
+      <h3>Add Product</h3>
+      <span class="material-icons close-btn" onclick="closeProductModal()">close</span>
+    </div> -->
+
+    <!-- Form -->
+    <!-- <form id="productForm" enctype="multipart/form-data">
+
+      <input type="text" id="name" placeholder="Product Name" required>
+
+      <textarea id="description" placeholder="Product Description" required></textarea>
+
+      <input type="text" id="category" placeholder="Category (eg: Electronics, Fashion)" required>
+
+      <div class="row">
+        <input type="number" id="price" placeholder="Price ₹" required>
+        <input type="number" id="discount" placeholder="Discount %" value="0">
+      </div>
+
+      <input type="number" id="stock" placeholder="Stock Quantity" required>
+
+      <select id="status">
+        <option value="true">Active</option>
+        <option value="false">Inactive</option>
+      </select>
+
+      <!-- Image -->
+      <!-- <label class="image-upload">
+        <span class="material-icons">upload</span>
+        Upload Image
+        <input type="file" id="image" accept="image/*" hidden>
+      </label>
+
+      <img id="preview" class="preview hidden">
+
+      <button type="submit" class="submit-btn">Add Product</button>
+    </form>
+  </div>
+</div>  -->
+
+  <div id="productModal" class="modal hidden">
+  <div class="modal-content wide">
+
     <!-- Header -->
     <div class="modal-header">
       <h3>Add Product</h3>
@@ -204,12 +248,24 @@
     <!-- Form -->
     <form id="productForm" enctype="multipart/form-data">
 
+      <!-- Basic Fields -->
       <input type="text" id="name" placeholder="Product Name" required>
-
       <textarea id="description" placeholder="Product Description" required></textarea>
 
-      <input type="text" id="category" placeholder="Category (eg: Electronics, Fashion)" required>
+      <!-- Category -->
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="electronics">Electronics</option>
+        <option value="fashion">Fashion</option>
+      </select>
 
+      <!-- Loader -->
+      <div id="categoryLoader" class="loader hidden"></div>
+
+      <!-- Dynamic Fields -->
+      <div id="categoryFields" class="category-fields hidden"></div>
+
+      <!-- Pricing -->
       <div class="row">
         <input type="number" id="price" placeholder="Price ₹" required>
         <input type="number" id="discount" placeholder="Discount %" value="0">
@@ -237,6 +293,7 @@
 </div>
 
 
+
 <script>
   let productView = "list"; // default
   
@@ -247,9 +304,6 @@ function setView(view) {
 function refreshProducts() {
   loadProducts(productPage);
 }
-
-
-
   
 const API = "https://my-store-w94t.onrender.com/api/admin";
 const token = localStorage.getItem("adminToken");
@@ -275,6 +329,46 @@ function logout() {
   localStorage.removeItem("adminToken");
   window.location.href = "admin-login.html";
 }
+
+  // Categories
+const categorySelect = document.getElementById("category");
+const categoryFields = document.getElementById("categoryFields");
+const loader = document.getElementById("categoryLoader");
+const modalContent = document.querySelector(".modal-content");
+
+categorySelect.addEventListener("change", () => {
+  categoryFields.innerHTML = "";
+  categoryFields.classList.add("hidden");
+
+  if (!categorySelect.value) return;
+
+  loader.classList.remove("hidden");
+
+  setTimeout(() => {
+    loader.classList.add("hidden");
+    modalContent.classList.add("expanded");
+    categoryFields.classList.remove("hidden");
+
+    if (categorySelect.value === "electronics") {
+      categoryFields.innerHTML = `
+        <input type="text" id="brand" placeholder="Brand">
+        <input type="text" id="model" placeholder="Model">
+        <input type="text" id="warranty" placeholder="Warranty">
+        <input type="text" id="specs" placeholder="Key Specs">
+      `;
+    }
+
+    if (categorySelect.value === "fashion") {
+      categoryFields.innerHTML = `
+        <input type="text" id="color" placeholder="Color">
+        <input type="text" id="size" placeholder="Size">
+        <input type="text" id="material" placeholder="Material">
+        <input type="text" id="fit" placeholder="Fit Type">
+      `;
+    }
+  }, 1200);
+});
+
 
   /* Load users count */
 async function loadUserCount() {
