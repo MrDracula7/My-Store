@@ -78,8 +78,15 @@ router.get("/", adminAuth, async (req, res) => {
 });
 
 // ADD product (WITH image)
+// router.post(
+//   "/",
+//   adminAuth,
+//   upload.single("image"),
+//   addProduct
+// );
+
 router.post(
-  "/",
+  "/products",
   adminAuth,
   upload.single("image"),
   addProduct
@@ -94,30 +101,75 @@ router.post(
 //   );
 //   res.json(product);
 // });
+// router.put(
+//   "/:id",
+//   adminAuth,
+//   upload.single("image"),
+//   async (req, res) => {
+//     const updateData = { ...req.body };
+
+//     if (req.file) {
+//       updateData.image = req.file.path;
+//     }
+
+//     const product = await Product.findByIdAndUpdate(
+//       req.params.id,
+//       updateData,
+//       { new: true }
+//     );
+
+//     res.json(product);
+//   }
+// );
+const cloudinary = require("../config/cloudinary");
+
 router.put(
   "/:id",
   adminAuth,
   upload.single("image"),
   async (req, res) => {
-    const updateData = { ...req.body };
+    try {
+      const product = await Product.findById(req.params.id);
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
 
-    if (req.file) {
-      updateData.image = req.file.path;
+      // 🔥 Delete old image if new image is uploaded
+      if (req.file && product.image?.public_id) {
+        await cloudinary.uploader.destroy(product.image.public_id);
+      }
+
+      // Update fields
+      product.name = req.body.name;
+      product.description = req.body.description;
+      product.category = req.body.category;
+      product.price = req.body.price;
+      product.discount = req.body.discount;
+      product.stock = req.body.stock;
+      product.isActive = req.body.isActive === "true";
+
+      // Save new image
+      if (req.file) {
+        product.image = {
+          url: req.file.path,
+          public_id: req.file.filename
+        };
+      }
+
+      await product.save();
+      res.json(product);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
     }
-
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true }
-    );
-
-    res.json(product);
   }
 );
 
 
+
+
+
 // DELETE product
-const cloudinary = require("../config/cloudinary");
+// const cloudinary = require("../config/cloudinary");
 
 router.delete("/:id", adminAuth, async (req, res) => {
   const product = await Product.findById(req.params.id);
