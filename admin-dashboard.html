@@ -677,9 +677,9 @@ if (product.image && product.image.url) {
   if (imageInput.files[0]) {
     formData.append("image", imageInput.files[0]);
   }
-    document.querySelectorAll("#categoryFields input").forEach(input => {
-  if (input.value.trim() !== "") {
-    formData.append(input.id, input.value);
+   document.querySelectorAll("#categoryFields input").forEach(input => {
+  if (input.value.trim()) {
+    formData.append(`specifications[${input.id}]`, input.value);
   }
 });
 
