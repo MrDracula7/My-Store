@@ -107,6 +107,21 @@
   <button onclick="loadProducts(1)">Apply</button>
 
 </div>
+<div class="product-toolbar">
+  <div>
+    <button onclick="setView('list')" title="List View">
+      <span class="material-icons">view_list</span>
+    </button>
+
+    <button onclick="setView('grid')" title="Grid View">
+      <span class="material-icons">grid_view</span>
+    </button>
+  </div>
+
+  <button onclick="refreshProducts()" title="Refresh">
+    <span class="material-icons">refresh</span>
+  </button>
+</div>
 
 
   <table>
@@ -120,6 +135,8 @@
       </tr>
     </thead>
     <tbody id="productsTable"></tbody>
+    <div id="productGrid" class="product-grid hidden"></div>
+
   </table>
 
   <div class="pagination">
@@ -221,6 +238,18 @@
 
 
 <script>
+  let productView = "list"; // default
+  
+function setView(view) {
+  productView = view;
+  loadProducts(productPage);
+}
+function refreshProducts() {
+  loadProducts(productPage);
+}
+
+
+
   
 const API = "https://my-store-w94t.onrender.com/api/admin";
 const token = localStorage.getItem("adminToken");
@@ -363,31 +392,59 @@ function loadProducts(page = 1) {
 })
   .then(res => res.json())
   .then(data => {
-    const table = document.getElementById("productsTable");
-    table.innerHTML = "";
+const table = document.getElementById("productsTable");
+const grid = document.getElementById("productGrid");
 
-    if (!data.products.length) {
-      table.innerHTML = `<tr><td colspan="5">No products found</td></tr>`;
-      return;
-    }
+table.innerHTML = "";
+grid.innerHTML = "";
 
-    productPages = data.pages;
+if (productView === "list") {
+  grid.classList.add("hidden");
+  table.parentElement.classList.remove("hidden");
 
-    data.products.forEach(p => {
-      table.innerHTML += `
-        <tr>
-          <td>${p.name}</td>
-          <td>₹${p.price}</td>
-          <td>${p.stock}</td>
-          <td>${p.isActive ? "Active" : "Inactive"}</td>
-          <td>
-            <button onclick="openEditProduct('${encodeURIComponent(JSON.stringify(p))}')">Edit</button>
-            <button onclick="toggleProduct('${p._id}')">Toggle</button>
-            <button onclick="deleteProduct('${p._id}')">Delete</button>
-          </td>
-        </tr>
-      `;
-    });
+  data.products.forEach(p => {
+    table.innerHTML += `
+      <tr>
+        <td>${p.name}</td>
+        <td>₹${p.price}</td>
+        <td>${p.stock}</td>
+        <td>${p.isActive ? "Active" : "Inactive"}</td>
+        <td>
+          <button onclick="openEditProduct('${encodeURIComponent(JSON.stringify(p))}')">Edit</button>
+          <button onclick="toggleProduct('${p._id}')">Toggle</button>
+          <button onclick="deleteProduct('${p._id}')">Delete</button>
+        </td>
+      </tr>
+    `;
+  });
+
+} else {
+  table.parentElement.classList.add("hidden");
+  grid.classList.remove("hidden");
+
+  data.products.forEach(p => {
+    const discounted =
+      p.discount > 0
+        ? Math.round(p.price - (p.price * p.discount) / 100)
+        : p.price;
+
+    grid.innerHTML += `
+      <div class="product-card">
+        <img src="${p.image?.url || ''}">
+        <h4>${p.name}</h4>
+
+        ${
+          p.discount > 0
+            ? `<div class="old-price">₹${p.price}</div>
+               <div class="new-price">₹${discounted}</div>`
+            : `<div class="new-price">₹${p.price}</div>`
+        }
+
+        <small>${p.isActive ? "Active" : "Inactive"}</small>
+      </div>
+    `;
+  });
+}
 
     document.getElementById("productPageInfo").innerText =
       `Page ${productPage} of ${productPages}`;
