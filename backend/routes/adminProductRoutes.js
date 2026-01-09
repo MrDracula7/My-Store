@@ -117,10 +117,19 @@ router.put(
 
 
 // DELETE product
+const cloudinary = require("../config/cloudinary");
+
 router.delete("/:id", adminAuth, async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product?.image?.public_id) {
+    await cloudinary.uploader.destroy(product.image.public_id);
+  }
+
   await Product.findByIdAndDelete(req.params.id);
-  res.json({ message: "Product deleted" });
+  res.json({ message: "Product and image deleted" });
 });
+
 
 // TOGGLE active
 router.patch("/:id/status", adminAuth, async (req, res) => {
