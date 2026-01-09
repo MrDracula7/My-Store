@@ -36,7 +36,10 @@ const productSchema = new mongoose.Schema({
   price: Number,
   discount: Number,
   stock: Number,
-  image: String,
+  image: {
+  url: String,
+  public_id: String
+  },
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now }
 });
