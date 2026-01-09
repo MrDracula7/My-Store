@@ -198,3 +198,48 @@ textarea {
   cursor: pointer;
   margin-top: 10px;
 }
+
+.product-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.product-toolbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background: #fff;
+}
+
+.product-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 14px;
+}
+
+.new-price {
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
