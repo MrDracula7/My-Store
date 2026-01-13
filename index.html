@@ -2,131 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MyStore</title>
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <title>Document</title>
 </head>
 <body>
+  <!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<!-- HEADER -->
-<header class="header">
-  <div class="logo">MyStore</div>
-
-  <div class="search-bar">
-    <input type="text" placeholder="Search for products, brands and more">
-    <span class="material-icons">search</span>
+<nav class="navbar">
+  <!-- Logo -->
+  <div class="nav-left">
+    <div class="logo">MyStore</div>
   </div>
 
-  <div class="header-actions">
-    <button class="icon-btn" id="profileBtn">
+  <!-- Search -->
+  <div class="nav-center">
+    <span class="material-icons search-icon">search</span>
+    <input type="text" placeholder="Search for products..." />
+  </div>
+
+  <!-- Right -->
+  <div class="nav-right">
+
+    <!-- Categories -->
+    <div class="nav-item category-wrapper">
+      <span>Categories</span>
+      <span class="material-icons">expand_more</span>
+
+      <!-- Dropdown -->
+      <div class="category-dropdown">
+        <a href="/category/fashion">Fashion</a>
+        <a href="/category/electronics">Electronics</a>
+        <a href="/category/home">Home & Living</a>
+        <a href="/category/beauty">Beauty</a>
+      </div>
+    </div>
+
+    <div class="nav-item">
       <span class="material-icons">person</span>
-    </button>
-    <button class="icon-btn">
+      <span>Account</span>
+    </div>
+
+    <div class="nav-item">
       <span class="material-icons">shopping_cart</span>
-    </button>
-  </div>
-</header>
-
-<!-- CATEGORY STRIP -->
-<nav class="categories">
-
-  <div class="category-item">
-    <span>Electronics</span>
-    <div class="dropdown">
-      <div class="column">
-        <h4>Mobiles</h4>
-        <a>Mi</a>
-        <a>Samsung</a>
-        <a>iPhone</a>
-        <a>Realme</a>
-      </div>
-      <div class="column">
-        <h4>Laptops</h4>
-        <a>Dell</a>
-        <a>HP</a>
-        <a>Asus</a>
-        <a>MacBook</a>
-      </div>
+      <span>Cart</span>
     </div>
   </div>
-
-  <div class="category-item">
-    <span>Fashion</span>
-    <div class="dropdown">
-      <div class="column">
-        <h4>Men</h4>
-        <a>T-Shirts</a>
-        <a>Shirts</a>
-        <a>Jeans</a>
-      </div>
-      <div class="column">
-        <h4>Women</h4>
-        <a>Dresses</a>
-        <a>Tops</a>
-        <a>Sarees</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="category-item">
-    <span>Home</span>
-  </div>
-
-  <div class="category-item">
-    <span>Sports</span>
-  </div>
-
 </nav>
 
-
-<!-- HERO -->
-<section class="hero">
-  <h1>Big Savings. Better Shopping.</h1>
-  <p>Explore trending products at best prices</p>
-</section>
-
-<!-- PRODUCTS -->
-<section class="products">
+<!-- Trending -->
+<section class="product-section bg-light-blue">
   <div class="section-header">
-    <h2>Deals of the Day</h2>
-    <button class="view-all">View All</button>
+    <h2>Trending Products</h2>
+    <a href="/category/trending" class="view-more">
+      View More <span class="material-icons">arrow_forward</span>
+    </a>
   </div>
 
-  <div class="products-grid">
-    <!-- Product Card -->
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300" alt="">
-      <h3>Cool T-Shirt</h3>
+  <div class="product-row" id="trendingRow"></div>
 
-      <div class="price">
-        <span class="new">₹299</span>
-        <span class="old">₹499</span>
-        <span class="off">40% OFF</span>
-      </div>
-    </div>
-  </div>
 </section>
 
-  <script src="api.js"></script>
-  <script>
-    
+<!-- Top Deals -->
+<section class="product-section bg-light-yellow">
+  <div class="section-header">
+    <h2>Top Deals</h2>
+    <a href="/deals" class="view-more">
+      View More <span class="material-icons">arrow_forward</span>
+    </a>
+  </div>
+
+  <div class="product-row" id="dealsRow"></div>
+</section>
+
+<!-- Suggested -->
+<section class="product-section bg-light-green">
+  <div class="section-header">
+    <h2>Suggested For You</h2>
+  </div>
+
+  <div class="product-row" id="suggestedRow"></div>
+</section>
+
+<script src="api.js"></script>
+<script>
+  
 const token = localStorage.getItem("token");
 
 if (token) {
-  document.getElementById("profileBtn").style.display = "block";
+document.getElementById("profileBtn").style.display = "block";
 }
 
 document.getElementById("profileBtn").addEventListener("click", () => {
-  window.location.href = "dashboard.html";
+window.location.href = "dashboard.html";
 });
-  </script>
+
+  const BASE_URL = "https://my-store-w94t.onrender.com/api/products";
+
+  async function loadTrending() {
+const res = await fetch(`${BASE_URL}?limit=10`);
+const data = await res.json();
+renderProducts("trendingRow", data.products);
+}
+
+  async function loadTopDeals() {
+const res = await fetch(`${BASE_URL}?limit=20`);
+const data = await res.json();
+
+const deals = data.products.filter(p => p.discount > 0);
+renderProducts("dealsRow", deals.slice(0, 10));
+}
+
+
+  async function loadSuggested() {
+const res = await fetch(`${BASE_URL}?limit=10`);
+const data = await res.json();
+renderProducts("suggestedRow", data.products);
+}
+
+  function renderProducts(containerId, products) {
+const container = document.getElementById(containerId);
+container.innerHTML = "";
+
+products.forEach(p => {
+  const discountPrice =
+    p.discount > 0
+      ? Math.round(p.price - (p.price * p.discount) / 100)
+      : p.price;
+
+  container.innerHTML += `
+    <div class="product-card">
+      <img src="${p.image?.url || '/placeholder.png'}" />
+
+      <div class="product-info">
+        <h4>${p.name}</h4>
+
+        <div class="price">
+          <span class="discounted">₹${discountPrice}</span>
+          ${
+            p.discount > 0
+              ? `<span class="original">₹${p.price}</span>
+                 <span class="off">${p.discount}% off</span>`
+              : ""
+          }
+        </div>
+      </div>
+    </div>
+  `;
+});
+}
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+loadTrending();
+loadTopDeals();
+loadSuggested();
+});
+
+  
+</script>
 </body>
 </html>
-
-
