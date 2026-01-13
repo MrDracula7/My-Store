@@ -27,6 +27,9 @@ const adminRoutes = require("./routes/adminRoutes");
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/products", adminProductRoutes);
 
+app.use("/api/products", require("./routes/productRoutes"));
+
+
 app.use("/api/admin/categories", require("./routes/adminCategoryRoutes"));
 
 
@@ -36,6 +39,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
 
 
 
