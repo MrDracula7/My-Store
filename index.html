@@ -101,26 +101,46 @@ window.location.href = "dashboard.html";
 
   const BASE_URL = "https://my-store-w94t.onrender.com/api/products";
 
-  async function loadTrending() {
-const res = await fetch(`${BASE_URL}?limit=10`);
-const data = await res.json();
-renderProducts("trendingRow", data.products);
+//   async function loadTrending() {
+// const res = await fetch(`${BASE_URL}?limit=10`);
+// const data = await res.json();
+// renderProducts("trendingRow", data.products);
+// }
+
+//   async function loadTopDeals() {
+// const res = await fetch(`${BASE_URL}?limit=20`);
+// const data = await res.json();
+
+// const deals = data.products.filter(p => p.discount > 0);
+// renderProducts("dealsRow", deals.slice(0, 10));
+// }
+
+
+//   async function loadSuggested() {
+// const res = await fetch(`${BASE_URL}?limit=10`);
+// const data = await res.json();
+// renderProducts("suggestedRow", data.products);
+// }
+
+  async function loadProductsBySubCategory(subCategory, containerId) {
+  const container = document.getElementById(containerId);
+
+  // Show skeletons
+  showSkeletons(containerId, 6);
+
+  try {
+    const res = await fetch(
+      `${BASE_URL}?subCategory=${subCategory}&limit=10`
+    );
+    const data = await res.json();
+
+    renderProducts(containerId, data.products);
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Failed to load products</p>";
+  }
 }
 
-  async function loadTopDeals() {
-const res = await fetch(`${BASE_URL}?limit=20`);
-const data = await res.json();
-
-const deals = data.products.filter(p => p.discount > 0);
-renderProducts("dealsRow", deals.slice(0, 10));
-}
-
-
-  async function loadSuggested() {
-const res = await fetch(`${BASE_URL}?limit=10`);
-const data = await res.json();
-renderProducts("suggestedRow", data.products);
-}
 
   function renderProducts(containerId, products) {
 const container = document.getElementById(containerId);
@@ -155,14 +175,30 @@ products.forEach(p => {
 }
 
 
-  document.addEventListener("DOMContentLoaded", () => {
-loadTrending();
-loadTopDeals();
-loadSuggested();
+document.addEventListener("DOMContentLoaded", () => {
+  loadProductsBySubCategory("trending", "trendingRow");
+  loadProductsBySubCategory("top-deals", "dealsRow");
+  loadProductsBySubCategory("suggested", "suggestedRow");
 });
+
+function showSkeletons(containerId, count) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  for (let i = 0; i < count; i++) {
+    container.innerHTML += `
+      <div class="product-card skeleton">
+        <div class="skeleton-img shimmer"></div>
+        <div class="skeleton-text shimmer"></div>
+        <div class="skeleton-text small shimmer"></div>
+      </div>
+    `;
+  }
+}
 
   
 </script>
 </body>
 </html>
+
 
