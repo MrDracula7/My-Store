@@ -291,115 +291,66 @@
 
 
 
-/* ===========================
-   MOBILE RESPONSIVE STYLES
-   =========================== */
-
+.mobile-bottom-nav {
+  display: none;
+}
 @media (max-width: 768px) {
-
-  /* Navbar */
-  .navbar {
-    padding: 0 12px;
-  }
-
-  .nav-left {
-    display: none;
-  }
-
-  .nav-right {
-    display: none;
-  }
-
-  .nav-center {
-    margin: 0;
-    max-width: 100%;
-  }
-
-  .nav-center input {
-    width: 100%;
-    font-size: 14px;
-  }
-
-  /* Product Sections */
-  .product-section {
-    margin: 12px;
-    padding: 16px;
-  }
-
-  .section-header h2 {
-    font-size: 16px;
-  }
-
-  /* Product Cards */
-  .product-row {
-    gap: 12px;
-  }
-
-  .product-card {
-    min-width: calc(50% - 6px); /* 2 cards visible */
-    padding: 10px;
-  }
-
-  .product-card img {
-    height: 130px;
-  }
-
-  .product-info h4 {
-    font-size: 13px;
-  }
-
-  /* Price */
-  .discounted {
-    font-size: 14px;
-  }
-
-  .original {
-    font-size: 12px;
-  }
-
-  /* Bottom Nav */
   .mobile-bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px;
+    height: 60px;
     background: #fff;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #eaeaea;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
   }
 
   .mobile-bottom-nav a {
+    color: #555;
     text-decoration: none;
-    color: #666;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 11px;
   }
 
   .mobile-bottom-nav a span {
-    font-size: 24px;
+    font-size: 26px;
   }
 
   .mobile-bottom-nav a.active {
     color: #2874f0;
   }
 
-  /* Give space for bottom nav */
   body {
-    padding-bottom: 72px;
+    padding-bottom: 70px;
+  }
+}
+@media (max-width: 768px) {
+
+  .navbar {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .nav-left,
+  .nav-right {
+    display: none !important;
+  }
+
+  .nav-center {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-center input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 6px;
   }
 }
 
-/* Hide bottom nav on desktop */
-@media (min-width: 769px) {
-  .mobile-bottom-nav {
-    display: none;
-  }
-}
 
 
