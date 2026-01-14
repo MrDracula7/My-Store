@@ -295,7 +295,7 @@
   display: none;
 }
 @media (max-width: 768px) {
-  .mobile-bottom-nav {
+  .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -431,6 +431,7 @@
 }
 
 }
+
 
 
 
