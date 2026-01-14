@@ -8,16 +8,17 @@ const Product = require("../models/Product");
  */
 router.get("/", async (req, res) => {
   try {
-    const { type, category, limit = 10 } = req.query;
+    const { subCategory, limit = 10 } = req.query;
 
-    let filter = { isActive: true };
+    const filter = {
+      isActive: true
+    };
 
-    // Optional logic (can improve later)
-    if (category) {
-      filter.category = category;
+    if (subCategory) {
+      filter.subCategory = subCategory;
     }
 
-    let products = await Product.find(filter)
+    const products = await Product.find(filter)
       .sort({ createdAt: -1 })
       .limit(Number(limit));
 
@@ -26,5 +27,6 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
 
 module.exports = router;
