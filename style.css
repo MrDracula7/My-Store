@@ -304,7 +304,7 @@
     background: #fff;
     border-top: 1px solid #eaeaea;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     z-index: 9999;
   }
@@ -379,6 +379,7 @@
 }
 
 }
+
 
 
 
