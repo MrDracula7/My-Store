@@ -342,15 +342,46 @@
   .nav-center {
     width: 100%;
     max-width: 100%;
+    position: relative;
   }
 
   .nav-center input {
     width: 100%;
-    padding: 10px 14px;
+    padding: 10px 12px 10px 40px;
     font-size: 14px;
     border-radius: 6px;
+    line-height: 1.4;
+    box-sizing: border-box;
+  }
+
+  .nav-center .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+}
+
+.nav-center input::placeholder {
+  font-size: 14px;
+  opacity: 0.8;
+}
+  @supports (-webkit-touch-callout: none) {
+  .nav-center input {
+    padding-left: 44px;
   }
 }
+.nav-center input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(40, 116, 240, 0.15);
+}
+
+}
+
+
+
 
 
 
